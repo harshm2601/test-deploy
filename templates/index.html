@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Obesity Prediction</title>
+</head>
+<body>
+  <h1>Enter Input for Prediction</h1>
+  <div>
+    <label>Gender:</label>
+    <select id="Gender">
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <!-- ... -->
+    </select>
+  </div>
+  <div><label>Age:</label><input type="number" id="Age"></div>
+  <div><label>Height:</label><input type="number" step="0.01" id="Height"></div>
+  <div><label>Weight:</label><input type="number" step="0.01" id="Weight"></div>
+  <div>
+    <label>family_history_with_overweight:</label>
+    <select id="family_history_with_overweight">
+      <option value="yes">yes</option>
+      <option value="no">no</option>
+    </select>
+  </div>
+  <div>
+    <label>FAVC:</label>
+    <select id="FAVC">
+      <option value="yes">yes</option>
+      <option value="no">no</option>
+    </select>
+  </div>
+  <div><label>FCVC:</label><input type="number" id="FCVC"></div>
+  <div><label>NCP:</label><input type="number" id="NCP"></div>
+  <div>
+    <label>CAEC:</label>
+    <select id="CAEC">
+      <option value="Sometimes">Sometimes</option>
+      <option value="Always">Always</option>
+      <!-- ... -->
+    </select>
+  </div>
+  <div>
+    <label>SMOKE:</label>
+    <select id="SMOKE">
+      <option value="yes">yes</option>
+      <option value="no">no</option>
+    </select>
+  </div>
+  <div><label>CH2O:</label><input type="number" step="0.1" id="CH2O"></div>
+  <div>
+    <label>SCC:</label>
+    <select id="SCC">
+      <option value="yes">yes</option>
+      <option value="no">no</option>
+    </select>
+  </div>
+  <div><label>FAF:</label><input type="number" id="FAF"></div>
+  <div><label>TUE:</label><input type="number" id="TUE"></div>
+  <div>
+    <label>CALC:</label>
+    <select id="CALC">
+      <option value="Sometimes">Sometimes</option>
+      <option value="no">no</option>
+      <option value="Frequently">Frequently</option>
+      <!-- ... -->
+    </select>
+  </div>
+  <div>
+    <label>MTRANS:</label>
+    <select id="MTRANS">
+      <option value="Walking">Walking</option>
+      <option value="Public_Transportation">Public_Transportation</option>
+      <!-- ... -->
+    </select>
+  </div>
+  
+  <button onclick="sendPrediction()">Predict</button>
+  <p id="result"></p>
+
+  <script>
+    function sendPrediction() {
+      const bodyData = {
+        Gender: document.getElementById("Gender").value,
+        Age: parseFloat(document.getElementById("Age").value),
+        Height: parseFloat(document.getElementById("Height").value),
+        Weight: parseFloat(document.getElementById("Weight").value),
+        family_history_with_overweight: document.getElementById("family_history_with_overweight").value,
+        FAVC: document.getElementById("FAVC").value,
+        FCVC: parseFloat(document.getElementById("FCVC").value),
+        NCP: parseFloat(document.getElementById("NCP").value),
+        CAEC: document.getElementById("CAEC").value,
+        SMOKE: document.getElementById("SMOKE").value,
+        CH2O: parseFloat(document.getElementById("CH2O").value),
+        SCC: document.getElementById("SCC").value,
+        FAF: parseFloat(document.getElementById("FAF").value),
+        TUE: parseFloat(document.getElementById("TUE").value),
+        CALC: document.getElementById("CALC").value,
+        MTRANS: document.getElementById("MTRANS").value
+      };
+      fetch("/predict", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(bodyData)
+      })
+      .then(res => res.json())
+      .then(out => {
+        document.getElementById("result").textContent = "Prediction: " + out.prediction;
+      });
+    }
+  </script>
+</body>
+</html>
